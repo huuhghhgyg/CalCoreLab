@@ -18,17 +18,17 @@ using Wpf.Ui.Common.Interfaces;
 namespace CalCoreLab.Views.Pages
 {
     /// <summary>
-    /// FormulaPage.xaml 的交互逻辑
+    /// DataProcess.xaml 的交互逻辑
     /// </summary>
-    public partial class FormulaPage : INavigableView<ViewModels.FormulaViewModel>
+    public partial class DataProcess : INavigableView<ViewModels.DataProcessViewModel>
     {
-        public FormulaPage(FormulaViewModel viewModel)
+        public DataProcess(DataProcessViewModel viewModel)
         {
+            InitializeComponent();
             ViewModel = viewModel;
             DataContext = viewModel;
-            InitializeComponent();
         }
 
-        public ViewModels.FormulaViewModel ViewModel { get; }
+        public DataProcessViewModel ViewModel { get; }
     }
 }

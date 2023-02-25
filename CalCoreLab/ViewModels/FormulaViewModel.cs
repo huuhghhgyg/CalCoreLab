@@ -11,7 +11,7 @@ namespace CalCoreLab.ViewModels
 {
     public partial class FormulaViewModel : ObservableObject, INavigationAware
     {
-        private string _input="";
+        private string _input = "";
         [ObservableProperty]
         private string _result = "";
         public string Input

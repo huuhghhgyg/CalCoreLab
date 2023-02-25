@@ -49,7 +49,7 @@
                         Text="UserInterface of CalCore" />
                 </StackPanel>
 
-                <ui:AutoSuggestBox Grid.Row="1" Margin="0,0,0,12" />
+                <!--<ui:AutoSuggestBox Grid.Row="1" Margin="0,0,0,12" />-->
 
                 <!--  This is the main navigation of the application.  -->
                 <ui:NavigationFluent

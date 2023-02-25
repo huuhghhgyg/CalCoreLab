@@ -52,6 +52,13 @@ namespace CalCoreLab.ViewModels
                 },
                 new NavigationItem()
                 {
+                    Content = "DataProcess",
+                    PageTag = "dataprocess",
+                    Icon = SymbolRegular.Database24,
+                    PageType = typeof(Views.Pages.DataProcess)
+                },
+                new NavigationItem()
+                {
                     Content = "Data",
                     PageTag = "data",
                     Icon = SymbolRegular.DataHistogram24,
