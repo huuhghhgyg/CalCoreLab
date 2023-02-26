@@ -14,16 +14,26 @@
       d:Background="{DynamicResource ApplicationBackgroundBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="Original Matrix"/>
-            <ui:TextBox Text="{Binding OriginalMatrix, Mode=TwoWay}"
-                        TextWrapping="Wrap"
-                        AcceptsReturn="True"/>
-            <TextBlock Text="Formatted Matrix"/>
-            <ui:TextBox Text="{Binding FormattedMatrix, Mode=TwoWay}"
-                        TextWrapping="Wrap"
-                        AcceptsReturn="True"/>
-        </StackPanel>
+    <Grid Margin="0,0,16,0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="0,0,4,0">
+                <TextBlock Text="Original Matrix"/>
+                <ui:TextBox Text="{Binding OriginalMatrix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap"
+                            AcceptsReturn="True"
+                            Margin="0,4,0,8"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                <TextBlock Text="Formatted Matrix"/>
+                <ui:TextBox Text="{Binding FormattedMatrix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap"
+                            AcceptsReturn="True"
+                            Margin="0,4,0,8"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:UiPage>

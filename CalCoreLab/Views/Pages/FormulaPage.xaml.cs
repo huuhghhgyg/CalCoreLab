@@ -20,7 +20,7 @@ namespace CalCoreLab.Views.Pages
     /// <summary>
     /// FormulaPage.xaml 的交互逻辑
     /// </summary>
-    public partial class FormulaPage : INavigableView<ViewModels.FormulaViewModel>
+    public partial class FormulaPage : INavigableView<FormulaViewModel>
     {
         public FormulaPage(FormulaViewModel viewModel)
         {
@@ -29,6 +29,6 @@ namespace CalCoreLab.Views.Pages
             InitializeComponent();
         }
 
-        public ViewModels.FormulaViewModel ViewModel { get; }
+        public FormulaViewModel ViewModel { get; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Wpf.Ui.Common.Interfaces;
 
@@ -44,10 +46,10 @@ namespace CalCoreLab.ViewModels
 
         string Matrix2Table(string matrixString)
         {
-            return matrixString.TrimStart('[').TrimEnd(']')
-                .Replace("\n","").Replace("\r","")
-                .Replace(";","\n")
-                .Replace(',', '\t');
+            matrixString = Regex.Replace(matrixString, @"\s*(\[|\])\s*", ""); //删除多余空格
+            matrixString = Regex.Replace(matrixString, @"\s*;\s*(\r|\n)?", "\n"); //换行符替换
+            matrixString = Regex.Replace(matrixString, @"(\s*,\s*)|,", " "); //逗号替换为空格
+            return matrixString.Replace(' ','\t'); //替换间隔为tab
         }
 
         public void OnNavigatedFrom()
