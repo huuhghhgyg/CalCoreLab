@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:CalCoreLab.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:viewmodels="clr-namespace:CalCoreLab.ViewModels"
+      xmlns:models="clr-namespace:CalCoreLab.Models"
       d:DataContext="{d:DesignInstance Type=viewmodels:DataProcessViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450"
@@ -15,25 +16,87 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 
     <Grid Margin="0,0,16,0">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Margin="0,0,4,0">
-                <TextBlock Text="Original Matrix"/>
-                <ui:TextBox Text="{Binding OriginalMatrix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap"
-                            AcceptsReturn="True"
-                            Margin="0,4,0,8"/>
+        <ScrollViewer>
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,4,0">
+                        <TextBlock Text="Original Matrix"/>
+                        <ui:TextBox Text="{Binding OriginalMatrix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap"
+                                AcceptsReturn="True"
+                                Margin="0,4,0,8"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                        <TextBlock Text="Formatted Matrix"/>
+                        <ui:TextBox Text="{Binding FormattedMatrix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap"
+                                AcceptsReturn="True"
+                                Margin="0,4,0,8"/>
+                    </StackPanel>
+                </Grid>
+
+                <ui:CardExpander Icon="PanelLeftExpand20" Header="指标正向化"
+                             IsExpanded="True">
+                    <ui:CardExpander.Content>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ui:TextBox Text="{Binding NormalMatrixString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵"
+                                                TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding NormalizeInfoString, Mode=OneWay}" Grid.Row="1"/>
+                                </Grid>
+
+                                <ListView ItemsSource="{Binding NormalizeItems}"
+                                      Grid.Column="1">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type models:NormalizeItem}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox SelectedIndex="{Binding DataProperty, Mode=TwoWay}"
+                                                      ItemsSource="{Binding DataPropertyCollection, Mode=OneWay}"/>
+                                                <TextBlock Text="{Binding DataPropertyString, Mode=OneWay}"/>
+                                                <ui:NumberBox Text="{Binding MiddleValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Visibility="{Binding MiddleVisibility, Mode=OneWay}"                                                          
+                                                          Step="0.1" IntegersOnly="False"
+                                                          PlaceholderText="Intermediate Value"/>
+                                                <StackPanel Visibility="{Binding RangeVisibility, Mode=OneWay}">
+                                                    <ui:NumberBox Text="{Binding Upperbound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Visibility="{Binding RangeVisibility, Mode=OneWay}"                                                          
+                                                          Step="0.1" IntegersOnly="False"
+                                                          PlaceholderText="Range Upperbound"/>
+                                                    <ui:NumberBox Text="{Binding Lowerbound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Visibility="{Binding RangeVisibility, Mode=OneWay}"                                                          
+                                                          Step="0.1" IntegersOnly="False"
+                                                          PlaceholderText="Range Lowerbound"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+                            <ui:TextBox MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵输出"
+                                        TextWrapping="Wrap"
+                                        Grid.Row="1"/>
+                        </Grid>
+                    </ui:CardExpander.Content>
+                </ui:CardExpander>
             </StackPanel>
-            <StackPanel Grid.Column="1" Margin="4,0,0,0">
-                <TextBlock Text="Formatted Matrix"/>
-                <ui:TextBox Text="{Binding FormattedMatrix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap"
-                            AcceptsReturn="True"
-                            Margin="0,4,0,8"/>
-            </StackPanel>
-        </Grid>
+        </ScrollViewer>
     </Grid>
 </ui:UiPage>

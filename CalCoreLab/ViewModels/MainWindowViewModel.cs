@@ -79,11 +79,11 @@ namespace CalCoreLab.ViewModels
 
             TrayMenuItems = new ObservableCollection<MenuItem>
             {
-                new MenuItem
-                {
-                    Header = "Home",
-                    Tag = "tray_home"
-                }
+                //new MenuItem
+                //{
+                //    Header = "Home",
+                //    Tag = "tray_home"
+                //}
             };
 
             _isInitialized = true;
