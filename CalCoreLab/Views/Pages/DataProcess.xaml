@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:CalCoreLab.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:viewmodels="clr-namespace:CalCoreLab.ViewModels"
-      xmlns:models="clr-namespace:CalCoreLab.Models"
+      xmlns:models="clr-namespace:CalCoreLab.Models" xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
       d:DataContext="{d:DesignInstance Type=viewmodels:DataProcessViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450"
@@ -59,38 +59,70 @@
                                     </Grid.RowDefinitions>
                                     <ui:TextBox Text="{Binding NormalMatrixString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵"
-                                                TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding NormalizeInfoString, Mode=OneWay}" Grid.Row="1"/>
+                                                TextWrapping="Wrap"
+                                                Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding NormalizeInfoString, Mode=OneWay}"
+                                               Margin="0,4,0,0"
+                                               Grid.Row="1"/>
                                 </Grid>
 
                                 <ListView ItemsSource="{Binding NormalizeItems}"
                                       Grid.Column="1">
+                                    <Behaviors:Interaction.Triggers>
+                                        <Behaviors:EventTrigger EventName="SelectionChanged">
+                                            <Behaviors:InvokeCommandAction Command="{Binding NormalizeDataCommand}" />
+                                        </Behaviors:EventTrigger>
+                                    </Behaviors:Interaction.Triggers>
                                     <ListView.ItemTemplate>
                                         <DataTemplate DataType="{x:Type models:NormalizeItem}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <ComboBox SelectedIndex="{Binding DataProperty, Mode=TwoWay}"
-                                                      ItemsSource="{Binding DataPropertyCollection, Mode=OneWay}"/>
-                                                <TextBlock Text="{Binding DataPropertyString, Mode=OneWay}"/>
-                                                <ui:NumberBox Text="{Binding MiddleValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Visibility="{Binding MiddleVisibility, Mode=OneWay}"                                                          
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <ComboBox SelectedIndex="{Binding DataPropertyIndex, Mode=TwoWay}"
+                                                          ItemsSource="{Binding DataPropertyCollection, Mode=OneWay}"
+                                                          Margin="0,0,4,0"
+                                                          VerticalAlignment="Top"/>
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                            Visibility="{Binding MiddleVisibility, Mode=OneWay}">
+                                                    <TextBlock Text="中间值" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                    <ui:NumberBox Text="{Binding MiddleValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Step="0.1" IntegersOnly="False"
                                                           PlaceholderText="Intermediate Value"/>
-                                                <StackPanel Visibility="{Binding RangeVisibility, Mode=OneWay}">
+                                                </StackPanel>
+                                                <Grid Visibility="{Binding RangeVisibility, Mode=OneWay}"
+                                                            Grid.Column="1">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="上限" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                     <ui:NumberBox Text="{Binding Upperbound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Visibility="{Binding RangeVisibility, Mode=OneWay}"                                                          
+                                                          Visibility="{Binding RangeVisibility, Mode=OneWay}"
                                                           Step="0.1" IntegersOnly="False"
-                                                          PlaceholderText="Range Upperbound"/>
+                                                          PlaceholderText="Range Upperbound"
+                                                          Grid.Column="1"/>
+                                                    <TextBlock Text="下限"
+                                                               Grid.Row="1" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                     <ui:NumberBox Text="{Binding Lowerbound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Visibility="{Binding RangeVisibility, Mode=OneWay}"                                                          
                                                           Step="0.1" IntegersOnly="False"
-                                                          PlaceholderText="Range Lowerbound"/>
-                                                </StackPanel>
-                                            </StackPanel>
+                                                          PlaceholderText="Range Lowerbound"
+                                                          Margin="0,4,0,0"
+                                                          Grid.Row="1" Grid.Column="1"/>
+                                                </Grid>
+                                            </Grid>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </Grid>
-                            <ui:TextBox MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵输出"
+                            <ui:TextBox Text="{Binding NormalizeResult, Mode=OneWay}"
+                                        MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵输出"
                                         TextWrapping="Wrap"
                                         Grid.Row="1"/>
                         </Grid>

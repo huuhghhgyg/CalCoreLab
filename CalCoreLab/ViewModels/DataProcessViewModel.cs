@@ -1,6 +1,8 @@
 ﻿using CalCore;
+using CalCore.Data;
 using CalCoreLab.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,7 +54,10 @@ namespace CalCoreLab.ViewModels
 
         string _normalizeMatrixString = string.Empty;
 
-        Matrix? NormalizedMatrix;
+        Matrix? NormalizeMatrix;
+
+        [ObservableProperty]
+        string normalizeResult = string.Empty;
 
         /// <summary>
         /// 正向化矩阵文本
@@ -62,20 +67,21 @@ namespace CalCoreLab.ViewModels
             get => _normalizeMatrixString;
             set
             {
-                value = value.Replace(";", ";\n");
+                value = Regex.Replace(value, @"(\n|\r|\s|\t)*;(\n|\r|\s|\t)*", ";\n");
+                //value = value.Replace(";", ";\n");
                 SetProperty(ref _normalizeMatrixString, value);
 
                 // 导入矩阵
                 try
                 {
-                    NormalizedMatrix = new Matrix(value);
+                    NormalizeMatrix = new Matrix(value);
                 }
                 catch (Exception ex)
                 {
                     normalizeInfoString = $"矩阵初始化错误：{ex.Message}"; //显示错误信息
                 }
 
-                if (NormalizedMatrix == null) return; //如果没有生成新矩阵，则停止
+                if (NormalizeMatrix == null) return; //如果没有生成新矩阵，则停止
                 InitializeNormalizeMatrix();
             }
         }
@@ -84,9 +90,9 @@ namespace CalCoreLab.ViewModels
 
         void InitializeNormalizeMatrix()
         {
-            NormalizeInfoString = $"行：{NormalizedMatrix.Row},列：{NormalizedMatrix.Col}";
+            NormalizeInfoString = $"行：{NormalizeMatrix.Row},列：{NormalizeMatrix.Col}";
             NormalizeItems.Clear();
-            for (int i = 0; i < NormalizedMatrix.Col; i++)
+            for (int i = 0; i < NormalizeMatrix.Col; i++)
             {
                 NormalizeItems.Add(new NormalizeItem());
             }
@@ -120,6 +126,31 @@ namespace CalCoreLab.ViewModels
             matrixString = Regex.Replace(matrixString, @"\s*;\s*(\r|\n)?", "\n"); //换行符替换
             matrixString = Regex.Replace(matrixString, @"(\s*,\s*)|,", " "); //逗号替换为空格
             return matrixString.Replace(' ', '\t'); //替换间隔为tab
+        }
+
+        [RelayCommand]
+        public void NormalizeData()
+        {
+            if (NormalizeMatrix == null) return; //排除NormalizeMatrix为空的情况
+            Matrix resultMatrix = new Matrix(NormalizeMatrix); //复制矩阵进行计算
+
+            for (int i = 0; i < normalizeItems.Count; i++)
+            {
+                switch (normalizeItems[i].DataProperty)
+                {
+                    case NormalizeEnums.Negative:
+                        Normalize.NormalizeFromMin(resultMatrix, i + 1);
+                        break;
+                    case NormalizeEnums.Middle:
+                        Normalize.NormalizeFromVal(resultMatrix, normalizeItems[i].MiddleValue, i + 1);
+                        break;
+                    case NormalizeEnums.Range:
+                        Normalize.NormalizeFromRange(resultMatrix, normalizeItems[i].Lowerbound, normalizeItems[i].Upperbound, i + 1);
+                        break;
+                }
+            }
+
+            NormalizeResult = resultMatrix.ValueString; //输出结果
         }
         #endregion
 

@@ -14,6 +14,7 @@ namespace CalCoreLab.Models
     {
         public NormalizeItem()
         {
+            DataProperty = 0;
         }
 
         [ObservableProperty]
@@ -23,20 +24,32 @@ namespace CalCoreLab.Models
         /// 指标类型
         /// </summary>
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(DataPropertyString))]
         [NotifyPropertyChangedFor(nameof(MiddleVisibility))]
         [NotifyPropertyChangedFor(nameof(RangeVisibility))]
-        NormalizeEnums dataProperty = 0;
+        [NotifyPropertyChangedFor(nameof(DataPropertyIndex))]
+        NormalizeEnums dataProperty = NormalizeEnums.Positive;
+
+        public int DataPropertyIndex
+        {
+            get => (int)dataProperty;
+            set
+            {
+                DataProperty = (NormalizeEnums)value;
+            }
+        }
+
         [ObservableProperty]
         /// <summary>
         /// 中间型指标值
         /// </summary>
         double middleValue;
+
         [ObservableProperty]
         /// <summary>
         /// 区间型指标上界
         /// </summary>
         double upperbound;
+
         [ObservableProperty]
         /// <summary>
         /// 区间型指标下界
@@ -50,21 +63,6 @@ namespace CalCoreLab.Models
         public Visibility RangeVisibility
         {
             get => dataProperty == NormalizeEnums.Range ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public string DataPropertyString
-        {
-            get
-            {
-                switch (DataProperty)
-                {
-                    case NormalizeEnums.Positive: return "极大型";
-                    case NormalizeEnums.Negative: return "极小型";
-                    case NormalizeEnums.Middle: return "中间型";
-                    case NormalizeEnums.Range: return "区间型";
-                    default: return "未识别";
-                }
-            }
         }
     }
 }
