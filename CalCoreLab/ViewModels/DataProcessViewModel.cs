@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Wpf.Ui.Common.Interfaces;
 
 namespace CalCoreLab.ViewModels
@@ -86,6 +87,9 @@ namespace CalCoreLab.ViewModels
             }
         }
 
+        [ObservableProperty]
+        string entropyWeight = string.Empty;
+
         #region 函数
 
         void InitializeNormalizeMatrix()
@@ -129,29 +133,39 @@ namespace CalCoreLab.ViewModels
         }
 
         [RelayCommand]
-        public void NormalizeData()
+        public void ProcessData()
         {
             if (NormalizeMatrix == null) return; //排除NormalizeMatrix为空的情况
             Matrix resultMatrix = new Matrix(NormalizeMatrix); //复制矩阵进行计算
 
+            NormalizeData(resultMatrix);
+
+        }
+
+        void NormalizeData(Matrix mt)
+        {
             for (int i = 0; i < normalizeItems.Count; i++)
             {
                 switch (normalizeItems[i].DataProperty)
                 {
                     case NormalizeEnums.Negative:
-                        Normalize.NormalizeFromMin(resultMatrix, i + 1);
+                        Normalize.NormalizeFromMin(mt, i + 1);
                         break;
                     case NormalizeEnums.Middle:
-                        Normalize.NormalizeFromVal(resultMatrix, normalizeItems[i].MiddleValue, i + 1);
+                        Normalize.NormalizeFromVal(mt, normalizeItems[i].MiddleValue, i + 1);
                         break;
                     case NormalizeEnums.Range:
-                        Normalize.NormalizeFromRange(resultMatrix, normalizeItems[i].Lowerbound, normalizeItems[i].Upperbound, i + 1);
+                        Normalize.NormalizeFromRange(mt, normalizeItems[i].Lowerbound, normalizeItems[i].Upperbound, i + 1);
                         break;
                 }
             }
 
-            NormalizeResult = resultMatrix.ValueString; //输出结果
+            NormalizeResult = mt.ValueString; //输出结果
+            CalculateEntropyWeight(mt); //输入正向化后的矩阵
         }
+
+        void CalculateEntropyWeight(Matrix mt)
+            => EntropyWeight = new Matrix(Evaluation.EntropyWeight(mt)).ValueString;
         #endregion
 
         #region 事件
