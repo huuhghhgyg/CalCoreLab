@@ -79,7 +79,8 @@ namespace CalCoreLab.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    normalizeInfoString = $"矩阵初始化错误：{ex.Message}"; //显示错误信息
+                    NormalizeInfoString = $"矩阵初始化失败：{ex.Message}"; //显示错误信息
+                    return;
                 }
 
                 if (NormalizeMatrix == null) return; //如果没有生成新矩阵，则停止
@@ -160,7 +161,7 @@ namespace CalCoreLab.ViewModels
                 }
             }
 
-            NormalizeResult = mt.ValueString; //输出结果
+            NormalizeResult = mt.ValueString.Replace('\t',' '); //输出结果
             CalculateEntropyWeight(mt); //输入正向化后的矩阵
         }
 

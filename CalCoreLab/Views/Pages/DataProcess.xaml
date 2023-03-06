@@ -62,15 +62,14 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
-                                        <RowDefinition/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
+                                    <TextBlock Text="{Binding NormalizeInfoString, Mode=OneWay}"
+                                               Grid.Column="1"/>
                                     <ui:TextBox Text="{Binding NormalMatrixString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵"
                                                 TextWrapping="Wrap"
-                                                Margin="0,5,0,0"/>
-                                    <TextBlock Text="{Binding NormalizeInfoString, Mode=OneWay}"
-                                               Margin="0,4,0,0"
-                                               Grid.Row="1"/>
+                                                Grid.Row="1" VerticalAlignment="Top" Margin="0,4,0,0"/>
                                 </Grid>
 
                                 <ListView ItemsSource="{Binding NormalizeItems}"
@@ -128,10 +127,13 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </Grid>
-                            <ui:TextBox Text="{Binding NormalizeResult, Mode=OneWay}"
-                                        MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵输出"
-                                        TextWrapping="Wrap" IsReadOnly="True"
-                                        Grid.Row="1" Margin="0,4,0,0"/>
+                            <StackPanel Grid.Row="1" Margin="0,8,0,0">
+                                <TextBlock Text="正向化后的指标矩阵"/>
+                                <ui:TextBox Text="{Binding NormalizeResult, Mode=OneWay}"
+                                            MinLines="5" AcceptsReturn="True" PlaceholderText="指标矩阵输出"
+                                            TextWrapping="Wrap" IsReadOnly="True" ClearButtonEnabled="False"
+                                            Margin="0,4,0,0"/>
+                            </StackPanel>
                         </Grid>
                     </ui:CardExpander.Content>
                 </ui:CardExpander>
@@ -147,7 +149,7 @@
                     </ui:CardExpander.Header>
                     <ui:TextBox Text="{Binding EntropyWeight, Mode=OneWay}"
                                 AcceptsReturn="True" PlaceholderText="请在指标正向化处输入矩阵，获得结果"
-                                TextWrapping="Wrap"
+                                TextWrapping="Wrap" IsReadOnly="True" ClearButtonEnabled="False"
                                 Margin="0,5,0,0"/>
                 </ui:CardExpander>
             </StackPanel>
