@@ -57,6 +57,8 @@ namespace CalCoreLab
                 services.AddScoped<ViewModels.FormulaViewModel>();
                 services.AddScoped<Views.Pages.DataProcess>();
                 services.AddScoped<ViewModels.DataProcessViewModel>();
+                services.AddScoped<Views.Pages.LinearProgramming>();
+                services.AddScoped<ViewModels.LinearProgrammingViewModel>();
 
                 // Configuration
                 services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));

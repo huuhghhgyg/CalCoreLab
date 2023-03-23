@@ -59,6 +59,13 @@ namespace CalCoreLab.ViewModels
                 },
                 new NavigationItem()
                 {
+                    Content = "LinearProgramming",
+                    PageTag = "lp",
+                    Icon = SymbolRegular.ShapeIntersect24,
+                    PageType = typeof(Views.Pages.LinearProgramming)
+                },
+                new NavigationItem()
+                {
                     Content = "Data",
                     PageTag = "data",
                     Icon = SymbolRegular.DataHistogram24,
