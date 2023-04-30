@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CalCoreLab_WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "CalCoreLab_WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
