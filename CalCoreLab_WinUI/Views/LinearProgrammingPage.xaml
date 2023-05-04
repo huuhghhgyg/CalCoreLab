@@ -10,7 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    NavigationCacheMode="Enabled">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -56,10 +57,19 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Text="目标" Margin="0,0,8,0" Width="100"/>
+                    <ComboBox Text="目标" Margin="0,0,8,0" Width="100"
+                              SelectedIndex="{x:Bind ViewModel.SolveTarget, Mode=TwoWay}">
+                        <ComboBoxItem Content="min"/>
+                        <ComboBoxItem Content="max"/>
+                    </ComboBox>
                     <TextBox PlaceholderText="目标函数系数"
+                             Text="{x:Bind ViewModel.TargetFunction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Grid.Column="1"/>
+                    <Button Content="Solve" Grid.Column="2" Margin="8,0,0,0"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Command="{x:Bind ViewModel.SolveLPCommand}"/>
                 </Grid>
 
                 <TextBlock Text="约束方程" Margin="0,12,0,0"/>
@@ -69,19 +79,24 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox PlaceholderText="约束方程系数" Text="{x:Bind ViewModel.ConsCoeffString, Mode=TwoWay}"/>
+                    <TextBox PlaceholderText="约束方程系数" Text="{x:Bind ViewModel.ConsCoeffString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox ItemsSource="{x:Bind ViewModel.SymbolItems}"
                               SelectedIndex="{x:Bind ViewModel.ConsSymbolIndex, Mode=TwoWay}"
                               Grid.Column="1" Margin="8,0,0,0" Width="80"/>
-                    <TextBox PlaceholderText="右端项" Text="{x:Bind ViewModel.Consb, Mode=TwoWay}"
+                    <TextBox PlaceholderText="右端项" Text="{x:Bind ViewModel.Consb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Grid.Column="2" Margin="8,0,0,0"/>
                     <Button Content="Add"
                             Command="{x:Bind ViewModel.AddConsCommand}"
                             Style="{StaticResource AccentButtonStyle}"
                             Grid.Column="3" Margin="8,0,0,0"/>
+                    <Button Content="Delete"
+                            Command="{x:Bind ViewModel.DelConsCommand}"
+                            Grid.Column="4" Margin="8,0,0,0"/>
                 </Grid>
                 <controls:DataGrid ItemsSource="{x:Bind ViewModel.LPItemCollection, Mode=TwoWay}"
+                                   SelectedIndex="{x:Bind ViewModel.ListSelectedIndex, Mode=TwoWay}"
                                    AutoGenerateColumns="False"
                                    Margin="0,8,0,0">
                     <controls:DataGrid.Columns>
@@ -92,9 +107,13 @@
                                                  ItemsSource="{x:Bind ViewModel.SymbolItems, Mode=OneWay}"/>
                         <controls:DataGridTextColumn Header="右端项"
                                              Binding="{Binding b}"/>
-
                     </controls:DataGrid.Columns>
                 </controls:DataGrid>
+
+                <TextBox Text="{x:Bind ViewModel.SolveOutput, Mode=OneWay}"
+                         TextWrapping="Wrap"
+                         PlaceholderText="输出"
+                         IsReadOnly="True" Margin="0,16,0,0"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

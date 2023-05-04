@@ -37,6 +37,8 @@ namespace CalCoreLab_WinUI
         public MainWindow()
         {
             this.InitializeComponent();
+            Title = "CalCoreLab";
+
             contentFrame.Navigate(typeof(CalculatePage));
             ViewModel = new MainWindowViewModel();
         }
