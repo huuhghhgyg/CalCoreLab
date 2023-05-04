@@ -72,6 +72,50 @@
                             Command="{x:Bind ViewModel.SolveLPCommand}"/>
                 </Grid>
 
+                <Expander IsExpanded="False" Margin="-2,16,-2,0"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Stretch">
+                    <Expander.Header>
+                        <Grid Margin="0,12" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE822;"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="求解参数设置"/>
+                                <TextBlock Text="设置其他求解过程涉及的参数"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Expander.Header>
+                    <Expander.Content>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="42"/>
+                                <RowDefinition Height="42"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="180"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="限制最大迭代次数" VerticalAlignment="Center"/>
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.IsMaxIterateEnabled, Mode=TwoWay}"
+                                          Grid.Column="1"/>
+                            <TextBlock Text="最大迭代次数" VerticalAlignment="Center"
+                                       Grid.Row="1"/>
+                            <NumberBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" SpinButtonPlacementMode="Inline"
+                                       SmallChange="10" LargeChange="100"
+                                       ValidationMode="InvalidInputOverwritten"
+                                       Minimum="1"
+                                       Value="{x:Bind ViewModel.MaxIterateCount, Mode=TwoWay}"
+                                       IsEnabled="{x:Bind ViewModel.IsMaxIterateEnabled, Mode=OneWay}"/>
+                        </Grid>
+                    </Expander.Content>
+                </Expander>
+
                 <TextBlock Text="约束方程" Margin="0,12,0,0"/>
                 <Grid Margin="0,8,0,0">
                     <Grid.ColumnDefinitions>

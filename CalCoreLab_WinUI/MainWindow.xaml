@@ -12,6 +12,7 @@
     
     <NavigationView x:Name="NavigationView"
                 MenuItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                IsBackButtonVisible="Collapsed"
                 ItemInvoked="NavigationView_ItemInvoked">
         <Frame x:Name="contentFrame"/>
     </NavigationView>

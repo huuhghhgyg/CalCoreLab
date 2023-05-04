@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CalCoreLab_WinUI.ViewModels
@@ -77,6 +78,14 @@ namespace CalCoreLab_WinUI.ViewModels
         [ObservableProperty]
         string _solveOutput = string.Empty;
 
+        [ObservableProperty]
+        int _maxIterateCount = 1;
+
+        [ObservableProperty]
+        bool _isMaxIterateEnabled = false;
+
+        uint? MaxIterate => IsMaxIterateEnabled ? (uint?)MaxIterateCount : null;
+
         [RelayCommand(CanExecute = nameof(CanSolve))]
         void SolveLP()
         {
@@ -89,10 +98,28 @@ namespace CalCoreLab_WinUI.ViewModels
             //约束方程
             foreach (LPItem item in LPItemCollection)
             {
-                lp.AddConstraint(Str2DoubleArray(item.ConsCoeff), item.Sym, double.Parse(item.b));
+                string coeff = item.ConsCoeff;
+                coeff = coeff.Trim(); //删除前后的空格
+                coeff = Regex.Replace(coeff, @"\s\s+", " ");
+                try
+                {
+                    lp.AddConstraint(Str2DoubleArray(coeff), item.Sym, double.Parse(item.b));
+                }
+                catch(Exception ex)
+                {
+                    SolveOutput = $"{ex.Message}：在（{coeff}）的字符转数字时遇到格式错误。";
+                    return;
+                }
             }
 
-            SolveOutput = lp.Solve();
+            try
+            {
+                SolveOutput = lp.Solve(MaxIterate);
+            }
+            catch (Exception ex)
+            {
+                SolveOutput = $"求解失败：{ex.Message}";
+            }
         }
 
         double[] Str2DoubleArray(string str)
