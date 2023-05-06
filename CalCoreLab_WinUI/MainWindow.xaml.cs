@@ -34,10 +34,15 @@ namespace CalCoreLab_WinUI
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private Utils.SystemBackdrop backdropHelper;
         public MainWindow()
         {
             this.InitializeComponent();
             Title = "CalCoreLab";
+            backdropHelper = new Utils.SystemBackdrop(this);
+            backdropHelper.TrySetMica(fallbackToAcrylic: true);
+            this.ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(AppTitleBar);
 
             contentFrame.Navigate(typeof(CalculatePage));
             ViewModel = new MainWindowViewModel();
@@ -49,7 +54,7 @@ namespace CalCoreLab_WinUI
         {
             FrameNavigationOptions navOptions = new FrameNavigationOptions();
             navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
-            
+
             if (args.IsSettingsInvoked) //—°÷–¡ÀSettings
             {
                 contentFrame.Navigate(typeof(SettingsPage));

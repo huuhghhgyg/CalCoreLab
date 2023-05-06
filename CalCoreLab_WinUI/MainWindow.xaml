@@ -9,11 +9,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <NavigationView x:Name="NavigationView"
-                MenuItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-                IsBackButtonVisible="Collapsed"
-                ItemInvoked="NavigationView_ItemInvoked">
-        <Frame x:Name="contentFrame"/>
-    </NavigationView>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="AppTitleBar">
+            <TextBlock x:Name="AppTitleTextBlock" Text="CalCoreLab"
+               TextWrapping="NoWrap"
+               Style="{StaticResource CaptionTextBlockStyle}" 
+               VerticalAlignment="Center"
+               Margin="16,0,0,0"/>
+        </Grid>
+        <NavigationView x:Name="NavigationView"
+                        MenuItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                        IsBackButtonVisible="Collapsed"
+                        ItemInvoked="NavigationView_ItemInvoked"
+                        Grid.Row="1">
+            <Frame x:Name="contentFrame"/>
+        </NavigationView>
+    </Grid>
 </Window>

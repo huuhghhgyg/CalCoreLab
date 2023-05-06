@@ -33,6 +33,11 @@ namespace CalCoreLab_WinUI.Behaviors
             AssociatedObject.Click += ButtonClick;
         }
 
+        protected override void OnDetaching()
+        {
+            AssociatedObject.Click -= ButtonClick;
+        }
+
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             if (Target.Text == null) return;
@@ -61,6 +66,11 @@ namespace CalCoreLab_WinUI.Behaviors
         protected override void OnAttached()
         {
             AssociatedObject.Click += ButtonClick;
+        }
+
+        protected override void OnDetaching()
+        {
+            AssociatedObject.Click -= ButtonClick;
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)

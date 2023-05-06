@@ -42,7 +42,6 @@ namespace CalCoreLab_WinUI.ViewModels
         {
             LPItemCollection.Add(new LPItem(ConsCoeffString, SymbolItems[ConsSymbolIndex], Consb));
             ConsCoeffString = string.Empty;
-            ConsSymbolIndex = 0;
             Consb = string.Empty;
         }
 
@@ -79,10 +78,10 @@ namespace CalCoreLab_WinUI.ViewModels
         string _solveOutput = string.Empty;
 
         [ObservableProperty]
-        int _maxIterateCount = 1;
+        int _maxIterateCount = 10000; //最大迭代次数
 
         [ObservableProperty]
-        bool _isMaxIterateEnabled = false;
+        bool _isMaxIterateEnabled = true; //默认是否打开最大迭代次数限制
 
         uint? MaxIterate => IsMaxIterateEnabled ? (uint?)MaxIterateCount : null;
 
@@ -118,7 +117,7 @@ namespace CalCoreLab_WinUI.ViewModels
             }
             catch (Exception ex)
             {
-                SolveOutput = $"求解失败：{ex.Message}";
+                SolveOutput = $"lp.Solve()求解失败：{ex.Message}";
             }
         }
 
