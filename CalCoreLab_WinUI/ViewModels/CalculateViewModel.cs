@@ -47,14 +47,19 @@ namespace CalCoreLab_WinUI.ViewModels
         {
             //预处理
             string input = Input;
-            //input = input.Replace("%", "/100");
-            input = Regex.Replace(input, @"(\d+(\.\d+)?)%", percentReplaceMatch); //正则表达式通过括号将匹配值分组
+
+            if (input.IndexOf('^') != -1)
+                input = Regex.Replace(input, @"(\d+(\.\d+)?)\^(\d+(\.\d+)?)", powReplaceMatch); //替换次方
+
+            if (input.IndexOf('%') != -1)
+                input = Regex.Replace(input, @"(\d+(\.\d+)?)%", percentReplaceMatch); //正则表达式通过括号将匹配值分组，替换百分号
 
             //计算
             Result = CalCore.Core.Calculate(input);
         }
 
         // 替换方法
+        string powReplaceMatch(Match m) => Math.Pow(double.Parse(m.Groups[1].Value), double.Parse(m.Groups[3].Value)).ToString();
         string percentReplaceMatch(Match m) => $"({m.Groups[1].Value}/100)";
 
         [RelayCommand(CanExecute = nameof(CanClearInput))]
